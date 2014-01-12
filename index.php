@@ -26,12 +26,16 @@ $app->store('client',$client);
 $app->filter('tag_slug', function ($tag_slug){
 	//	Initialize the jolt object as $app
 	$app = Jolt::getInstance();
-	//	query the database for the slug..
+
+	//	query the database for the slug...
 	$tag = Model::factory('Tag')->where_equal('slug',$tag_slug)->find_one();
-	//	grab all photos connected to this slug..
+
+	//	grab all photos connected to this slug...
 	$photos = $tag->photos()->find_many();
+
 	//	store the $tag object in the session
 	$app->store('tag', $tag);
+
 	//	store the $photos object in the session
 	$app->store('photos', $photos);
 });
@@ -40,10 +44,13 @@ $app->filter('tag_slug', function ($tag_slug){
 $app->get('/tag/:tag_slug', function($tag_slug){
 	//	Initialize the jolt object as $app
 	$app = Jolt::getInstance();
+
 	//	grab the $tag object from the session
 	$tag = $app->store('tag');
+
 	//	grab the $photos object from the session
 	$photos = $app->store('photos');
+
 	//	render the gallery view from views/gallery.php
 	$app->render( 'gallery', array(
 		"pageTitle"=>"viewing Photos for {$tag->name}",
@@ -58,26 +65,29 @@ $app->post('/listener', function(){
 	$app = Jolt::getInstance();
 	//	Were any images included in this post?
 	if ( isset($_POST['NumMedia']) && $_POST['NumMedia'] > 0 ){
-		//	let's find out what tag this is for.. or create a new one..
+		//	let's find out what tag this is for... or create a new one...
 		$thetag = slugify( $_POST['Body'] );
 		$tag  = Model::factory('Tag')->where_equal( 'slug', $thetag )->find_one();
+
 		if( isset($tag->id) && !empty($tag->id) ){
 			//	The tag existed already, so grab the id
 			$tag_id = $tag->id;
 		}else{
-			//	no tag already exists...
+			//	no tag already exists in the db, so we'll create a new one...
 			$tag 					= Model::factory('Tag')->create();
 			$tag->name 				= $_POST['Body']; 
 			$tag->slug		 		= slugify( $_POST['Body'] );
 			$tag->save();
 			$tag_id = $tag->id();			
 		}
+
 		//	cycle through each image that was sent...
 		for ($i = 0; $i < $_POST['NumMedia']; $i++){
 			//	If the contentType of the media was not an image, then continue
 			if (strripos($_POST['MediaContentType'.$i], 'image') === False){
 				continue;
 			}
+
 			//	create a unique filename based on the URL of the image
 			$file = sha1($_POST['MediaUrl'.$i]).'.jpg';
 			//	download the original image and store it in the images/original folder
@@ -112,7 +122,7 @@ $app->post('/listener', function(){
 		);
 		return true;
 	}else{
-		//	No image was included.. so reply to the user that there was an error...
+		//	No image was included... so reply to the user that there was an error...
 		if ( isset($_POST['From']) ){
 			$message = $app->store('client')->account->messages->sendMessage(
 				$app->option('twilio.from'), // From a valid Twilio number
@@ -130,6 +140,7 @@ $app->post('/listener', function(){
 $app->get('/', function(){
 	//	Initialize the jolt object as $app
 	$app = Jolt::getInstance();
+
 	//	Grab a total count of all tags
 	$tags = Model::factory('Tag')->count();
 	if( isset($tags) ){
