@@ -8,6 +8,11 @@
 <hr />
 <h3>Tags</h3>
 <ul>
+<?php
+/*
+ *	Cycle through each tag and output a list...
+ */
+?>
 <?php 	foreach($tagList as $tag){	?>
 	<li>
 		<a href="<?php echo $uri?>/tag/<?php echo $tag->slug?>"><?php echo $tag->name?></a>

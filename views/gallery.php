@@ -5,18 +5,23 @@
 <div class="row">
 	<div class="col-xs-12 text-center">
 		<div id="container">
+<?php
+/*
+ *	Loop through all photos for this tag and display it...
+ */
+?>
 <?php 	foreach($photos as $photo){	?>
-				<?php if (file_exists('images/processed/'.$photo->file)){ ?>
-					<div class="well image">
-						<div class="wrapper shadow">
-							<a href="<?php echo $uri?>/images/processed/<?php echo $photo->file ?>" title="<?php echo $photo->datetime ?>" >
-								<img class="img-responsive" src="<?php echo $uri?>/images/processed/<?php echo $photo->file ?>" />
-							</a>
-							<p class="info"><?php echo $photo->datetime?></p>
-						</div>
-					</div>
-				<?php } ?>
-			<?php } ?>
+<?php 		if (file_exists('images/processed/'.$photo->file)){ ?>
+			<div class="well image">
+				<div class="wrapper shadow">
+					<a href="<?php echo $uri?>/images/processed/<?php echo $photo->file ?>" title="<?php echo $photo->datetime ?>" >
+						<img class="img-responsive" src="<?php echo $uri?>/images/processed/<?php echo $photo->file ?>" />
+					</a>
+					<p class="info"><?php echo $photo->datetime?></p>
+				</div>
+			</div>
+<?php 		} ?>
+<?php 	} ?>
 		</div>
 	</div>
 </div>
