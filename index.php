@@ -22,7 +22,7 @@ $client = new Services_Twilio($app->option('twilio.accountsid'), $app->option('t
 $fromNumber = $app->option('twilio.from');
 $app->store('client',$client);
 
-// preload photos whenever a matching route has $tag_slug in it
+// Preload photos whenever a matching route has $tag_slug in it
 $app->filter('tag_slug', function ($tag_slug){
 	//	Initialize the jolt object as $app
 	$app = Jolt::getInstance();
@@ -36,7 +36,7 @@ $app->filter('tag_slug', function ($tag_slug){
 	$app->store('photos', $photos);
 });
 
-//	called from a get method of /tag/$tag_slug
+//	Called from a get method of /tag/$tag_slug
 $app->get('/tag/:tag_slug', function($tag_slug){
 	//	Initialize the jolt object as $app
 	$app = Jolt::getInstance();
@@ -52,7 +52,7 @@ $app->get('/tag/:tag_slug', function($tag_slug){
 	));
 });
 
-//	called on post /listener from Twilio
+//	Called on post /listener from Twilio
 $app->post('/listener', function(){
 	//	Initialize the jolt object as $app
 	$app = Jolt::getInstance();
@@ -112,7 +112,7 @@ $app->post('/listener', function(){
 		);
 		return true;
 	}else{
-		//	No image was included.. so reply to the user...
+		//	No image was included.. so reply to the user that there was an error...
 		if ( isset($_POST['From']) ){
 			$message = $app->store('client')->account->messages->sendMessage(
 				$app->option('twilio.from'), // From a valid Twilio number
@@ -126,7 +126,7 @@ $app->post('/listener', function(){
 });
 
 
-//	Home page
+//	Home page, called as index of site...
 $app->get('/', function(){
 	//	Initialize the jolt object as $app
 	$app = Jolt::getInstance();
