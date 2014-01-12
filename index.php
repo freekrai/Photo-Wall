@@ -24,34 +24,34 @@ $app->store('client',$client);
 
 // Preload photos whenever a matching route has $tag_slug in it
 $app->filter('tag_slug', function ($tag_slug){
-// Initialize the jolt object as $app
+	// Initialize the jolt object as $app
 	$app = Jolt::getInstance();
 
-// query the database for the slug...
+	// query the database for the slug...
 	$tag = Model::factory('Tag')->where_equal('slug',$tag_slug)->find_one();
 
-// grab all photos connected to this slug...
+	// grab all photos connected to this slug...
 	$photos = $tag->photos()->find_many();
 
-// store the $tag object in the session
+	// store the $tag object in the session
 	$app->store('tag', $tag);
 
-// store the $photos object in the session
+	// store the $photos object in the session
 	$app->store('photos', $photos);
 });
 
 // Called from a get method of /tag/$tag_slug
 $app->get('/tag/:tag_slug', function($tag_slug){
-// Initialize the jolt object as $app
+	// Initialize the jolt object as $app
 	$app = Jolt::getInstance();
 
-// grab the $tag object from the session
+	// grab the $tag object from the session
 	$tag = $app->store('tag');
 
-// grab the $photos object from the session
+	// grab the $photos object from the session
 	$photos = $app->store('photos');
 
-// render the gallery view from views/gallery.php
+	// render the gallery view from views/gallery.php
 	$app->render( 'gallery', array(
 		"pageTitle"=>"viewing Photos for {$tag->name}",
 		"tag"=>$tag,

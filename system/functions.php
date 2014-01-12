@@ -1,7 +1,8 @@
 <?php
 /*
  *	slugify( $string )
- *	Convert a text string into a slug.
+ *		Convert a text string into a slug.
+ *		Returns the slugified text
  */	
 	function slugify( $string ){
 		$string = strtolower( trim($string) );
