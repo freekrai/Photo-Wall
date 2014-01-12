@@ -75,9 +75,9 @@ $app->post('/listener', function(){
 			$tag_id = $tag->id;
 		}else{
 			// No tag already exists in the db, so we'll create a new one...
-			$tag 					= Model::factory('Tag')->create();
-			$tag->name 				= $_POST['Body']; 
-			$tag->slug		 		= slugify( $_POST['Body'] );
+			$tag = Model::factory('Tag')->create();
+			$tag->name 	= $_POST['Body']; 
+			$tag->slug	= slugify( $_POST['Body'] );
 			$tag->save();
 			$tag_id = $tag->id();			
 		}
@@ -106,12 +106,12 @@ $app->post('/listener', function(){
 			unlink('images/original/'.$file);
 
 			// Create a $photo object and store the image in the database
-			$photo 				=	Model::factory('Photo')->create();
-			$photo->tag_id		=	$tag_id;
-			$photo->file		=	$file;
-			$photo->from		=	$_POST['From'];
-			$photo->country		=	$_POST['FromCountry'];
-			$photo->datetime 	=	date('F jS Y H:i:s e');
+			$photo 	= Model::factory('Photo')->create();
+			$photo->tag_id = $tag_id;
+			$photo->file = $file;
+			$photo->from = $_POST['From'];
+			$photo->country	= $_POST['FromCountry'];
+			$photo->datetime = date('F jS Y H:i:s e');
 			$photo->save();
 		}
 		
